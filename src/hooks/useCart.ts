@@ -1,14 +1,15 @@
 import { db } from "../data/db"
 import { useState, useEffect, useMemo } from "react"
+import type { Guitar, GuitarId, cartItem } from '../types/index'
 
 export const useCart = () => {
 
-    const initialCart = () => {
+    const initialCart = (): cartItem[] => {
         const localStorageCart = localStorage.getItem('cart')
         return localStorageCart ? JSON.parse(localStorageCart) : []
     }
 
-    const [data, setData] = useState(db)
+    const [data] = useState(db)
     const [cart, setCart] = useState(initialCart)
     const MAX_ITEMS = 5
     const MIN_ITEMS = 1
@@ -17,26 +18,26 @@ export const useCart = () => {
         localStorage.setItem('cart', JSON.stringify(cart))
     }, [cart])
 
-    function addToCart(item) {
-        const itemExists = cart.findIndex(guitar => guitar.id === item.id)
+    function addToCart(item: Guitar) {
+        const itemExists = cart.findIndex((guitar: Guitar) => guitar.id === item.id)
         if (itemExists >= 0) {
             if (cart[itemExists].quantity >= 5) return
             const updatedCart = [...cart]
             updatedCart[itemExists].quantity++
             setCart(updatedCart)
         } else {
-            item.quantity = 1
-            setCart([...cart, item])
+            const newItem: cartItem = { ...item, quantity: 1 }
+            setCart([...cart, newItem])
         }
     }
 
-    function removeFromCart(id) {
+    function removeFromCart(id: GuitarId) {
         // setCart(cart.filter((guitar) => guitar.id !== id)) también es válido en este caso
         setCart(prevCart => prevCart.filter((guitar) => guitar.id !== id))
     }
 
-    function increaseQuantity(id) {
-        const updatedCart = cart.map(item => {
+    function increaseQuantity(id: GuitarId) {
+        const updatedCart = cart.map((item: cartItem) => {
             if (item.id === id && item.quantity < MAX_ITEMS)
                 return {
                     ...item,
@@ -48,7 +49,7 @@ export const useCart = () => {
         setCart(updatedCart)
     }
 
-    function decreaseQuantity(id) {
+    function decreaseQuantity(id: GuitarId) {
         const updatedCart = cart.map(item => {
             if (item.id === id && item.quantity > MIN_ITEMS)
                 return {
