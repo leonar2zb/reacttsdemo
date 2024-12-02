@@ -1,6 +1,3 @@
 {
-    "vercel": {
-      "devTools": false
-    }
-  }
-  
+    "devTools": false
+}
