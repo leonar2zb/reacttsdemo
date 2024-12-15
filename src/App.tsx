@@ -9,7 +9,6 @@ function App() {
 
   const {
     cart,
-    addToCart,
     removeFromCart,
     increaseQuantity,
     decreaseQuantity,

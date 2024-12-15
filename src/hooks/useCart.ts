@@ -16,19 +16,6 @@ export const useCart = () => {
         localStorage.setItem('cart', JSON.stringify(cart))
     }, [cart])
 
-    function addToCart(item: Guitar) {
-        const itemExists = cart.findIndex((guitar: Guitar) => guitar.id === item.id)
-        if (itemExists >= 0) {
-            if (cart[itemExists].quantity >= 5) return
-            const updatedCart = [...cart]
-            updatedCart[itemExists].quantity++
-            setCart(updatedCart)
-        } else {
-            const newItem: cartItem = { ...item, quantity: 1 }
-            setCart([...cart, newItem])
-        }
-    }
-
     function removeFromCart(id: GuitarId) {
         // setCart(cart.filter((guitar) => guitar.id !== id)) también es válido en este caso
         setCart(prevCart => prevCart.filter((guitar) => guitar.id !== id))
@@ -70,7 +57,6 @@ export const useCart = () => {
 
     return {
         cart,
-        addToCart,
         removeFromCart,
         increaseQuantity,
         decreaseQuantity,
