@@ -6,10 +6,9 @@ import type { CartActions } from "../reducers/cart-reducer"
 type HeaderProps = {
     cart: cartItem[],
     dispatch: Dispatch<CartActions>
-    clearCart: () => void
 }
 
-export default function Header({ cart, dispatch, clearCart }: HeaderProps) {
+export default function Header({ cart, dispatch }: HeaderProps) {
 
     // State derivados
     const isEmpty = useMemo(() => cart.length === 0, [cart])
@@ -85,7 +84,7 @@ export default function Header({ cart, dispatch, clearCart }: HeaderProps) {
                                         </table>
 
                                         <p className="text-end">Total pagar: <span className="fw-bold">${cartTotal}</span></p>
-                                        <button className="btn btn-dark w-100 mt-3 p-2" onClick={clearCart} >Vaciar Carrito</button>
+                                        <button className="btn btn-dark w-100 mt-3 p-2" onClick={() => dispatch({ type: 'clearCart' })} >Vaciar Carrito</button>
                                     </>
                                 )}
                             </div>
